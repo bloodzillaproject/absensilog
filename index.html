@@ -4,98 +4,104 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Absensi Log</title>
+
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Theme Color for PWA -->
+  <meta name="theme-color" content="#222222">
 </head>
 <body>
 
-<div class="container glass">
-  <h1>Absensi Log</h1>
+  <div class="container glass">
+    <h1>Absensi Log</h1>
 
-  <form id="absensiForm">
+    <form id="absensiForm">
+      <input list="driverList" placeholder="Driver (Choose or Type)" required>
+      <datalist id="driverList">
+        <option>Malik</option><option>Johan</option><option>Dudi</option>
+        <option>Iwan</option><option>Teddy</option><option>Kholik</option>
+        <option>Seno</option><option>Cahya</option>
+      </datalist>
 
-    <label>Driver</label>
-    <input list="driverList" placeholder="Driver" required>
-    <datalist id="driverList">
-      <option>Malik</option><option>Johan</option><option>Dudi</option>
-      <option>Iwan</option><option>Teddy</option><option>Kholik</option>
-      <option>Seno</option><option>Cahya</option>
-    </datalist>
+      <input type="date" required>
+      
+      <input list="unitList" placeholder="Unit (Choose or Type)" required>
+      <datalist id="unitList">
+        <option>Avanza DYK</option>
+        <option>Xenia ROK | FAU</option>
+        <option>Honda BRV BZO</option>
+        <option>Veloz DFJ</option>
+        <option>Stargazer</option>
+        <option>Innova Reborn PKA | FAP</option>
+        <option>Innova Zenix 89 WIS</option>
+        <option>Innova Zenix 50 WIS</option>
+        <option>Innova Zenix Hybrid NFJ</option>
+      </datalist>
 
-    <label>Date</label>
-    <input type="date" required>
+      <!-- Job Toggle -->
+      <div class="job-toggle">
+        <input type="radio" id="office" name="job" value="Office" checked>
+        <label for="office">Office</label>
+        <input type="radio" id="personal" name="job" value="Personal">
+        <label for="personal">Personal</label>
+        <div class="slider"></div>
+      </div>
 
-    <label>Unit</label>
-    <input list="unitList" placeholder="Unit" required>
-    <datalist id="unitList">
-      <option>Avanza DYK</option>
-      <option>Xenia ROK | FAU</option>
-      <option>Honda BRV BZO</option>
-      <option>Veloz DFJ</option>
-      <option>Stargazer</option>
-      <option>Innova Reborn PKA | FAP</option>
-      <option>Innova Zenix 89 WIS</option>
-      <option>Innova Zenix 50 WIS</option>
-      <option>Innova Zenix Hybrid NFJ</option>
-    </datalist>
+      <input placeholder="PO (Type Manually)" required>
+      <input placeholder="User (Type Manually)" required>
 
-    <label>Job</label>
-    <div class="job-toggle">
-      <input type="radio" id="office" name="job" value="Office" checked>
-      <input type="radio" id="personal" name="job" value="Personal">
+      <input list="destList" placeholder="Destination (Choose or Type)" required>
+      <datalist id="destList">
+        <option>Dalam Kota</option>
+        <option>Cikarang</option>
+        <option>Bandung</option>
+      </datalist>
 
-    <div class="slider"></div>
+      <input list="durList" placeholder="Duration (Choose or Type)" required>
+      <datalist id="durList">
+        <option>Drop Only</option>
+        <option>6 Jam</option>
+        <option>12 Jam</option>
+        <option>Fullday</option>
+      </datalist>
 
-    <label for="office">Office</label>
-    <label for="personal">Personal</label>
-    </div>
+      <textarea placeholder="Notes (Type Detail Info)"></textarea>
 
-    <label>PO</label>
-    <input placeholder="PO" required>
+      <button type="submit">INPUT</button>
+    </form>
+  </div>
 
-    <label>User</label>
-    <input placeholder="User" required>
+  <!-- FLOAT TODAY LOG -->
+  <div id="todayLog">Today Log</div>
 
-    <label>Destination</label>
-    <input list="destList" placeholder="Destination" required>
-    <datalist id="destList">
-      <option>Dalam Kota</option>
-      <option>Cikarang</option>
-      <option>Bandung</option>
-    </datalist>
+  <!-- TODAY LOG MODAL -->
+  <div id="todayModal" class="modal">
+    <ul id="todayList"></ul>
+  </div>
 
-    <label>Duration</label>
-    <input list="durList" placeholder="Duration" required>
-    <datalist id="durList">
-      <option>Drop Only</option>
-      <option>6 Jam</option>
-      <option>12 Jam</option>
-      <option>Fullday</option>
-    </datalist>
+  <!-- POPUP -->
+  <div id="popup"></div>
 
-    <label>Notes</label>
-    <textarea placeholder="Notes Detail Info"></textarea>
+  <!-- SOUNDS -->
+  <audio id="clickSound" src="assets/sounds/clicktone.mp3"></audio>
+  <audio id="successSound" src="assets/sounds/successtone.mp3"></audio>
+  <audio id="errorSound" src="assets/sounds/errortone.mp3"></audio>
 
-    <button type="submit">INPUT</button>
-  </form>
-</div>
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
 
-<!-- FLOAT TODAY LOG -->
-<div id="todayLog">Today Log</div>
+  <!-- REGISTER SERVICE WORKER -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW registration failed:", err));
+    }
+  </script>
 
-<!-- POPUP -->
-<div id="popup"></div>
-
-<div id="todayModal" class="glass modal">
-  <h3>Today Log</h3>
-  <ul id="todayList"></ul>
-  <button onclick="closeToday()">Close</button>
-</div>
-
-<audio id="clickSound" src="assets/sounds/clicktone.mp3"></audio>
-<audio id="successSound" src="assets/sounds/successtone.mp3"></audio>
-<audio id="errorSound" src="assets/sounds/errortone.mp3"></audio>
-
-<script src="script.js"></script>
 </body>
 </html>
